@@ -55,7 +55,7 @@ class ComputerPlayer(Player):
         if current_bet is None:
             # CPU is the first player, so make a conservative estimate
             value = random.choice(self.dice).value
-            quantity_limit = (total_dice_estimate - len(self.dice)) / 6
+            quantity_limit = int((total_dice_estimate - len(self.dice)) / 6)
             if value > 1:
                 quantity_limit *= 2
             quantity = self.count_dice(value) + random.randrange(0, quantity_limit + 1)
