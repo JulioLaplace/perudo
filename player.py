@@ -17,7 +17,8 @@ from strings import NON_PALIFICO_CHANGE_ERROR
 from strings import INVALID_NON_WILDCARD_QUANTITY
 from strings import INVALID_WILDCARD_QUANTITY
 from strings import INVALID_BET_EXCEPTION
-
+import perudo
+import state
 
 class Player(object):
 
@@ -55,7 +56,7 @@ class ComputerPlayer(Player):
         if current_bet is None:
             # CPU is the first player, so make a conservative estimate
             value = random.choice(self.dice).value
-            quantity_limit = (total_dice_estimate - len(self.dice)) / 6
+            quantity_limit = int((total_dice_estimate - len(self.dice)) / 6)
             if value > 1:
                 quantity_limit *= 2
             quantity = self.count_dice(value) + random.randrange(0, quantity_limit + 1)
@@ -100,6 +101,8 @@ class ComputerPlayer(Player):
 
         return bet
 
+    def cfr(self):
+        state = State(perudo.nb) 
 
 class HumanPlayer(Player):
 
@@ -110,7 +113,7 @@ class HumanPlayer(Player):
         print(string)
         bet = None
         while bet is None:
-            bet_input = input("> ")
+            bet_input = input(">")
             if bet_input.lower() == "dudo":
                 return DUDO
             if "x" not in bet_input:

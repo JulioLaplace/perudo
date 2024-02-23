@@ -22,6 +22,8 @@ class Perudo(object):
 
     def __init__(self, name, player_number, dice_number):
         self.round = 0
+        self.nbTotalDices=dice_number*(player_number+1)
+        # self.nbDice=dice_number*(player_number+1)
         self.players = []
         self.players.append(HumanPlayer(name=name, dice_number=dice_number, game=self))
         for i in range(0, player_number):
@@ -43,15 +45,23 @@ class Perudo(object):
         print(winner(self.players[0].name))
 
     def run_round(self):
+        
         self.round += 1
         for player in self.players:
             player.roll_dice()
+            self.nbTotalDices += len(player.dice)
+
+
 
         print(
             round_title(
                 round_number=self.round, is_palifico_round=self.is_palifico_round()
             )
         )
+        print("There is " + str(self.nbTotalDices) + " dices left")
+
+
+    
         round_over = False
         current_bet = None
         current_player = self.first_player
@@ -59,6 +69,7 @@ class Perudo(object):
         while not round_over:
             next_player = self.get_next_player(current_player)
             next_bet = current_player.make_bet(current_bet)
+
             bet_string = None
             if next_bet == DUDO:
                 bet_string = "Dudo!"
@@ -154,8 +165,10 @@ def main(args):
         if dice_number < 1:
             print(INSUFFICIENT_DICE)
             return
-
+        print("avant perudo")
         Perudo(name, bot_number, dice_number)
+        print("après perudo")
+
     except ValueError:
         print(
             "Args must be of the form <name> <bot_number> <dice_number>, where bot_number and dice_number are integers."
