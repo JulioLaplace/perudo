@@ -17,8 +17,7 @@ from strings import NON_PALIFICO_CHANGE_ERROR
 from strings import INVALID_NON_WILDCARD_QUANTITY
 from strings import INVALID_WILDCARD_QUANTITY
 from strings import INVALID_BET_EXCEPTION
-import perudo
-import state
+
 
 class Player(object):
 
@@ -102,7 +101,8 @@ class ComputerPlayer(Player):
         return bet
 
     def cfr(self):
-        state = State(perudo.nb) 
+        state = State(perudo.nb)
+
 
 class HumanPlayer(Player):
 
