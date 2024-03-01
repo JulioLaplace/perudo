@@ -35,6 +35,7 @@ import random
 from state import State
 
 
+# code qui ne marche pas mais qui est la pour donner une idée de ce qu'il faut faire
 class CFR:
     def __init__(self, game, player):
         self.game = game
