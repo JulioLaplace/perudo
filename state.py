@@ -1,56 +1,76 @@
 import math
 import random
 
+# map avec état -> noeud (qui contient les regrets)
+# il faut un tableau de stratégies et un de regrets
+# dans un état, il faut l'histoire des actions, les regrets, les stratégies, les valeurs, les noeuds enfants
+# il faut :
+# - notre information cachée,
+#
+
 
 class State:
-    def __init__(self, nbTot, myDice, nbDicePlayer, lastQ, lastV):
+    def __init__(self, nbTot, myDice, nbDicePlayer, previousActions):
         self.nbTotalDices = nbTot
         self.nbDicePlayer = nbDicePlayer
         self.myDice = myDice
-        self.lastQty = lastQ
-        self.lastVal = lastV
-        self.actions = []
+        self.previousActions = previousActions
+        self.nextActions = []
 
     # Choisir l action dans le tableau d action
     def chooseAction(self):
-        if self.actions is None:
+        if self.nextActions is None:
             self.generateActions()
 
         # choose action randomly
-        return random.choice(self.actions)
+        return random.choice(self.nextActions)
 
     # Faire le tableau de toutes les actions possibles
     def generateActions(self):
+        # self.previousActions[-1] = [quantité, valeur] (du dernier coup joué, càd du dernier élément du tableau)
 
         #  Dudo
-        self.actions.append([1, -1])
+        self.nextActions.append([1, -1])
 
         # first player
-        if self.lastQty == 0:
+        if len(self.previousActions) == 0:
             for i in range(1, self.nbTotalDices + 1):
                 for j in range(1, 7):
-                    self.actions.append([i, j])
+                    self.nextActions.append([i, j])
         else:
             # on augmente la quantité, puis quand on est au max, on augmente la valeur et sa quantité
-            if self.lastVal != 1:
+            if self.previousActions[-1][1] != 1:
                 # générer tout sauf les perudo
-                for i in range(self.lastVal, 7):
+                for i in range(2, self.previousActions[-1][1]):
                     for j in range(
-                        self.lastQty + 1 if (i == self.lastVal) else self.lastQty,
+                        self.previousActions[-1][0] + 1, self.nbTotalDices + 1
+                    ):
+                        self.nextActions.append([j, i])
+                for i in range(self.previousActions[-1][1], 7):
+                    for j in range(
+                        (
+                            self.previousActions[-1][0] + 1
+                            if (i == self.previousActions[-1][1])
+                            else self.previousActions[-1][0]
+                        ),
                         self.nbTotalDices + 1,
                     ):
-                        self.actions.append([j, i])
+                        self.nextActions.append([j, i])
                 # générer les perudo
-                for i in range(math.ceil(self.lastQty / 2), self.nbTotalDices + 1):
-                    self.actions.append([i, 1])
+                for i in range(
+                    math.ceil(self.previousActions[-1][0] / 2), self.nbTotalDices + 1
+                ):
+                    self.nextActions.append([i, 1])
             else:  # perudo
                 # générer tous les perudo
-                for i in range(self.lastQty + 1, self.nbTotalDices + 1):
-                    self.actions.append([i, 1])
+                for i in range(self.previousActions[-1][0] + 1, self.nbTotalDices + 1):
+                    self.nextActions.append([i, 1])
                 # générer les autres (quantité x 2 + 1)
-                for i in range(self.lastVal + 1, 7):
-                    for j in range(self.lastQty * 2 + 1, self.nbTotalDices + 1):
-                        self.actions.append([j, i])
+                for i in range(self.previousActions[-1][1] + 1, 7):
+                    for j in range(
+                        self.previousActions[-1][0] * 2 + 1, self.nbTotalDices + 1
+                    ):
+                        self.nextActions.append([j, i])
 
     # Fonction qui vérifie si l'on est dans un état terminal
     def isTerminal(self):
@@ -65,6 +85,6 @@ class State:
     # Fonction qui crée une stratégie aléatoire
     def generateRandomStrategy(self):
         strategy = {}
-        for action in self.actions:
+        for action in self.nextActions:
             strategy[action] = random.random()
         return strategy
