@@ -20,19 +20,20 @@ bot_names = ["Winston", "Luke", "Jeff", "Jia", "Ben"]
 
 class Perudo(object):
 
-    def __init__(self, name, player_number, dice_number):
+    def __init__(self, dice_number_p1, dice_number_p2):
         self.round = 0
-        self.nbTotalDices=dice_number*(player_number+1)
+        self.nbTotalDices = 0
         # self.nbDice=dice_number*(player_number+1)
         self.players = []
-        self.players.append(HumanPlayer(name=name, dice_number=dice_number, game=self))
-        for i in range(0, player_number):
-            self.players.append(
-                ComputerPlayer(
-                    name=self.get_random_name(), dice_number=dice_number, game=self
-                )
-            )
-
+        self.players.append(
+            HumanPlayer(name="Player 1", dice_number=dice_number_p1, game=self)
+        )
+        self.players.append(
+            HumanPlayer(name="Player 2", dice_number=dice_number_p2, game=self)
+            # ComputerPlayer(
+            #     name=self.get_random_name(), dice_number=dice_number, game=self
+            # )
+        )
         random.shuffle(self.players)
 
         print(welcome_message(self.players))
@@ -45,13 +46,12 @@ class Perudo(object):
         print(winner(self.players[0].name))
 
     def run_round(self):
-        
+
         self.round += 1
+        self.nbTotalDices = 0
         for player in self.players:
             player.roll_dice()
             self.nbTotalDices += len(player.dice)
-
-
 
         print(
             round_title(
@@ -60,8 +60,6 @@ class Perudo(object):
         )
         print("There is " + str(self.nbTotalDices) + " dices left")
 
-
-    
         round_over = False
         current_bet = None
         current_player = self.first_player
@@ -156,17 +154,11 @@ def get_argv(args, index, default):
 
 def main(args):
     try:
-        name = get_argv(args, 1, "Player")
-        bot_number = int(get_argv(args, 2, 3))
-        if bot_number < 1:
-            print(INSUFFICIENT_BOTS)
-            return
-        dice_number = int(get_argv(args, 3, 5))
-        if dice_number < 1:
-            print(INSUFFICIENT_DICE)
-            return
+        dice_number_p1 = int(get_argv(args, 1, 5))
+        dice_number_p2 = int(get_argv(args, 2, 5))
+
         print("avant perudo")
-        Perudo(name, bot_number, dice_number)
+        Perudo(dice_number_p1=dice_number_p1, dice_number_p2=dice_number_p2)
         print("après perudo")
 
     except ValueError:

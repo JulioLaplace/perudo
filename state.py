@@ -93,12 +93,16 @@ class State:
 
     # Fonction qui vérifie si l'on est dans un état terminal
     def isTerminal(self):
-        return self.nbTotalDices == 0
+        return self.previousActions[-1] == [1, -1]
 
     # Fonction qui retourne la valeur de l'état pour le joueur
-    def resultingState(self, action):
-        new_state = State(self.nbTotalDices - action)
-        new_state.player = 1
+    def nextState(self, action):
+        new_state = State(
+            nbTot=self.nbTotalDices,
+            myDice=self.myDice,
+            previousActions=self.previousActions + [action],
+            is_palifico_round=self.is_palifico_round,
+        )
         return new_state
 
     # Fonction qui crée une stratégie aléatoire
