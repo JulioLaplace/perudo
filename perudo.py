@@ -6,6 +6,7 @@ from bet import Bet
 from bet import DUDO
 from player import ComputerPlayer
 from player import HumanPlayer
+from player import CFRPlayer
 from strings import correct_dudo
 from strings import incorrect_dudo
 from strings import INSUFFICIENT_BOTS
@@ -26,13 +27,14 @@ class Perudo(object):
         # self.nbDice=dice_number*(player_number+1)
         self.players = []
         self.players.append(
-            HumanPlayer(name="Player 1", dice_number=dice_number_p1, game=self)
+            # HumanPlayer(name="Player 1", dice_number=dice_number_p1, game=self)
+            CFRPlayer(name="Player 1", dice_number=dice_number_p1, game=self)
         )
         self.players.append(
-            HumanPlayer(name="Player 2", dice_number=dice_number_p2, game=self)
-            # ComputerPlayer(
-            #     name=self.get_random_name(), dice_number=dice_number, game=self
-            # )
+            # HumanPlayer(name="Player 2", dice_number=dice_number_p2, game=self)
+            CFRPlayer(
+                name="Player 2", dice_number=dice_number_p2, game=self
+            )
         )
         random.shuffle(self.players)
 

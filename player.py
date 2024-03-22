@@ -100,8 +100,10 @@ class ComputerPlayer(Player):
 
         return bet
 
-    def cfr(self):
-        state = State(perudo.nb)
+class CFRPlayer(Player):
+
+    def make_bet(self, current_bet):
+        return bet
 
 
 class HumanPlayer(Player):

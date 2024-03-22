@@ -105,9 +105,9 @@ class State:
         )
         return new_state
 
-    # Fonction qui crée une stratégie aléatoire
-    def generateRandomStrategy(self):
-        strategy = {}
-        for action in self.nextActions:
-            strategy[action] = random.random()
-        return strategy
+    # # Fonction qui crée une stratégie aléatoire
+    # def generateRandomStrategy(self):
+    #     strategy = {}
+    #     for action in self.nextActions:
+    #         strategy[action] = random.random()
+    #     return strategy
