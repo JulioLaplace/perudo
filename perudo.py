@@ -26,15 +26,14 @@ class Perudo(object):
         self.nbTotalDices = 0
         # self.nbDice=dice_number*(player_number+1)
         self.players = []
+        self.history = []
         self.players.append(
             # HumanPlayer(name="Player 1", dice_number=dice_number_p1, game=self)
             CFRPlayer(name="Player 1", dice_number=dice_number_p1, game=self)
         )
         self.players.append(
-            # HumanPlayer(name="Player 2", dice_number=dice_number_p2, game=self)
-            CFRPlayer(
-                name="Player 2", dice_number=dice_number_p2, game=self
-            )
+            HumanPlayer(name="Player 2", dice_number=dice_number_p2, game=self)
+            
         )
         random.shuffle(self.players)
 
@@ -68,7 +67,7 @@ class Perudo(object):
         print("{0} will go first...".format(current_player.name))
         while not round_over:
             next_player = self.get_next_player(current_player)
-            next_bet = current_player.make_bet(current_bet)
+            next_bet = current_player.make_bet(current_bet, self.history)
 
             bet_string = None
             if next_bet == DUDO:

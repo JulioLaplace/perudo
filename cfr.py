@@ -23,8 +23,10 @@ class CFR:
 
     # Fonction principale de l'algorithme cfr
     def cfr(self, game, player, pi, po):
+        print("cfr")
         # Si l'état du jeu est terminal, retourner la valeur de l'état pour le joueur
         if self.isTerminal():
+            print("isTerminal")
             if game.isDudo(self.history[-1][0], self.history[-1][1]):
                 return -1
             else:
@@ -39,7 +41,7 @@ class CFR:
         else:
             node = self.generateNode(actions)
             self.node_map[tuple(tuple(tuple(x) if isinstance(x, list) else x for x in currentKey[0]) if isinstance(x, list) else x for x in currentKey)] = node
-        
+
         # Créer une stratégie depuis les regrets
         strategy = self.getStrategyFromRegrets(node)
         
@@ -78,7 +80,8 @@ class CFR:
         self.history.pop()
 
     def gameReset(self):
-        return NewPerudo(random.randint(1, 4), random.randint(1, 4)) 
+        print("gameReset")
+        return NewPerudo(random.randint(1, 2), random.randint(1, 2)) 
     
     def isTerminal(self):
         if len(self.history) == 0:
@@ -151,7 +154,6 @@ class CFR:
                         self.history[-1][0] * 2 + 1, game.nbTotalDices + 1
                     ):
                         nextActions.append([j, i])
-                            
         return nextActions
     
     def generateNode(self, actions):

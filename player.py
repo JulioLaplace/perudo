@@ -29,7 +29,7 @@ class Player(object):
         for i in range(0, dice_number):
             self.dice.append(Die())
 
-    def make_bet(self, current_bet):
+    def make_bet(self, current_bet, history):
         pass
 
     def roll_dice(self):
@@ -50,7 +50,7 @@ class Player(object):
 
 class ComputerPlayer(Player):
 
-    def make_bet(self, current_bet):
+    def make_bet(self, current_bet, history):
         total_dice_estimate = len(self.dice) * len(self.game.players)
         if current_bet is None:
             # CPU is the first player, so make a conservative estimate
@@ -102,13 +102,13 @@ class ComputerPlayer(Player):
 
 class CFRPlayer(Player):
 
-    def make_bet(self, current_bet):
+    def make_bet(self, current_bet, history):
         return bet
 
 
 class HumanPlayer(Player):
 
-    def make_bet(self, current_bet):
+    def make_bet(self, current_bet, history):
         string = "Your turn. Your dice:"
         for die in self.dice:
             string += " {0}".format(die.value)

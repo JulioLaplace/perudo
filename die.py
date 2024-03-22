@@ -7,4 +7,4 @@ class Die(object):
         self.roll()
 
     def roll(self):
-        self.value = randrange(1, 4)
+        self.value = randrange(1, 7)
